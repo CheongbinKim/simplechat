@@ -9,24 +9,37 @@
     <style>
       body{
         background-color: #9bbbd4;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
       }
       form{
-        position : fixed;
-        bottom : 0;
-        width:100%;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #fff;
+        z-index: 1000;
       }
       ul {
         list-style-type: none;
         margin: 0;
-        padding: 0;
+        padding: 10px;
+        overflow-y: scroll;
+        height: calc(100vh - 70px); /* 화면 전체 높이에서 폼 높이를 뺀 값 */
+        box-sizing: border-box;
+        height: calc(100vh - 80px); /* 폼 높이 고려하여 계산 */
+        box-sizing: border-box;
+        padding-bottom: 50px; /* 폼의 높이만큼 여백 추가 */
       }
-      li {
+      #nosuper {
         padding: 8px;
         margin-bottom: 4px;
-        background: #f2f2f2;
+        background: #fef01b;
       }
-      #super{
-        background:#ffffff;
+      #super {
+        background: #ffffff;
       }
       input {
         padding: 20px;
@@ -65,7 +78,20 @@
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         if (input.value) {
-          socket.emit("chat message", input.value);
+          const queryString = window.location.search;
+          
+          const urlParams = new URLSearchParams(queryString);
+
+          // 특정 키의 값 가져오기 예시
+          // 예를 들어, URL이 ?k=123&name=John 일 때
+          const kValue = urlParams.get('k'); // '123'
+
+          if(kValue == 123){
+            socket.emit("chat message", "*"+input.value);
+          }else{
+            socket.emit("chat message", input.value);
+          }
+          
           input.value = "";
         }
       });
@@ -78,29 +104,40 @@
       });
 
       socket.on("chat messages", function (msgs) {
+        
         msgs.forEach(function (msg) {
           const item = document.createElement("li");
-          item.textContent = msg;
-          const queryString = window.location.search;
-          console.log(queryString);
-          if(queryString === "?k="){
-            item.id='super';
+          console.log(msg.charAt(20))
+          if(msg.charAt(20) == "*"){
+            msg = msg.replace("*","");
+            item.id = 'super';
+          }else{
+            item.id = 'nosuper';
           }
+          
+          item.textContent = msg;
+
           messages.appendChild(item);
         });
-        window.scrollTo(0, document.body.scrollHeight);
+        //window.scrollTo(0, document.body.scrollHeight);
+        messages.scrollTop = messages.scrollHeight; // 마지막 메시지로 스크롤
       });
 
       socket.on("chat message", function (msg) {
         const item = document.createElement("li");
-        item.textContent = msg;
-        const queryString = window.location.search;
-          console.log(queryString);
-          if(queryString.indexOf('k')){
-            item.id='super';
+        if(msg.charAt(20) == "*"){
+            msg = msg.replace("*","");
+            item.id = 'super';
+          }else{
+            item.id = 'nosuper';
           }
+
+        
+        item.textContent = msg;
+
         messages.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
+        //window.scrollTo(0, document.body.scrollHeight);
+        messages.scrollTop = messages.scrollHeight; // 마지막 메시지로 스크롤
         document.getElementById("input").focus();
       });
     </script>
