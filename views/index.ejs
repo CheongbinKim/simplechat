@@ -23,6 +23,7 @@
     </style>
   </head>
   <body>
+    <button id="clear">clear</button>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
@@ -42,6 +43,13 @@
           socket.emit("chat message", input.value);
           input.value = "";
         }
+      });
+
+      const clearBtn = document.getElementById("clear");
+      console.log(clearBtn);
+      clearBtn.addEventListener("click", function (e) {
+        socket.emit("clear", "");
+        location.reload(true);
       });
 
       socket.on("chat messages", function (msgs) {
