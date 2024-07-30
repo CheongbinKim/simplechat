@@ -115,8 +115,8 @@
         
         msgs.forEach(function (msg) {
           const item = document.createElement("li");
-          console.log(msg.charAt(20))
-          if(msg.charAt(20) == "*"){
+          console.log(msg.charAt(9))
+          if(msg.charAt(9) == "*"){
             msg = msg.replace("*","");
             item.id = 'super';
           }else{
@@ -133,7 +133,7 @@
 
       socket.on("chat message", function (msg) {
         const item = document.createElement("li");
-        if(msg.charAt(20) == "*"){
+        if(msg.charAt(9) == "*"){
             msg = msg.replace("*","");
             item.id = 'super';
           }else{
