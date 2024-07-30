@@ -3,6 +3,7 @@
   <head>
     <title>Socket.IO Chat</title>
     <style>
+      
       ul {
         list-style-type: none;
         margin: 0;
@@ -12,6 +13,9 @@
         padding: 8px;
         margin-bottom: 4px;
         background: #f2f2f2;
+      }
+      #super{
+        background:cornflowerblue;
       }
       input {
         padding: 8px;
@@ -56,6 +60,11 @@
         msgs.forEach(function (msg) {
           const item = document.createElement("li");
           item.textContent = msg;
+          const queryString = window.location.search;
+          console.log(queryString);
+          if(queryString.indexOf('k')){
+            item.id='super';
+          }
           messages.appendChild(item);
         });
         window.scrollTo(0, document.body.scrollHeight);
@@ -64,6 +73,11 @@
       socket.on("chat message", function (msg) {
         const item = document.createElement("li");
         item.textContent = msg;
+        const queryString = window.location.search;
+          console.log(queryString);
+          if(queryString.indexOf('k')){
+            item.id='super';
+          }
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
       });

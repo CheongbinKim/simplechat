@@ -52,11 +52,8 @@ app.post("/login", (req, res) => {
 // Serve the chat page
 app.get("/chat", (req, res) => {
   console.log(req.query);
-  if(req.query.k){
-    return res.render("index",{super:true});
-  }else{
-    return res.render("index",{super:false});
-  }
+
+  res.render("index");
   
 });
 
