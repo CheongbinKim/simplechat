@@ -62,7 +62,7 @@
           item.textContent = msg;
           const queryString = window.location.search;
           console.log(queryString);
-          if(queryString.indexOf('k')){
+          if(queryString === "?k="){
             item.id='super';
           }
           messages.appendChild(item);
