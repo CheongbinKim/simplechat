@@ -27,9 +27,8 @@
         margin: 0;
         padding: 10px;
         overflow-y: scroll;
-        height: calc(100vh - 70px); /* 화면 전체 높이에서 폼 높이를 뺀 값 */
+        height: calc(100vh - 100px); /* 화면 전체 높이에서 폼 높이를 뺀 값 */
         box-sizing: border-box;
-        height: calc(100vh - 80px); /* 폼 높이 고려하여 계산 */
         box-sizing: border-box;
         padding-bottom: 50px; /* 폼의 높이만큼 여백 추가 */
       }
@@ -39,6 +38,8 @@
         background: #fef01b;
       }
       #super {
+        padding: 8px;
+        margin-bottom: 4px;
         background: #ffffff;
       }
       input {
@@ -60,7 +61,7 @@
       <div class="input-group mb-3">
         <input type="text" id="input" class="form-control" placeholder="내용을 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">
         <div class="input-group-append">
-          <button class="btn btn-primary" type="button">전송</button>
+          <button type="submit" class="btn btn-primary" type="button">전송</button>
         </div>
       </div>
 
