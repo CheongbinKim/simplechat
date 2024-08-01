@@ -17,7 +17,7 @@
 
     <style>
       body {
-        background-color: #9bbbd4;
+        background-color: white;
         margin: 0;
         padding: 0;
         height: 100%;
@@ -106,6 +106,7 @@
           // 연속된 4자리 숫자가 확인되면 처리
           if (currentSequence.length === 4) {
             if (currentSequence == "8081") {
+              document.body.style.backgroundColor = '#9bbbd4';
               document.getElementById("key").style.display = "block";
             }
             //console.log("Detected 4-digit sequence:", currentSequence);
@@ -143,6 +144,7 @@
 
         if (touchCount >= maxTouches) {
           console.log("10 touches detected!");
+          document.body.style.backgroundColor = '#9bbbd4';
           document.getElementById("key").style.display = "block";
           touchCount = 0; // Optionally reset the count after detection
         }
@@ -177,7 +179,8 @@
             class="form-control"
             placeholder="내용을 입력하세요."
             aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
+            aria-describedby="basic-addon2" 
+            autocomplete='off'
           />
           <div class="input-group-append">
             <button type="submit" class="btn btn-primary">

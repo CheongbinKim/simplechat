@@ -39,7 +39,7 @@ io.on("connection", (socket) => {
   // When the server receives a message from a client
   socket.on("chat message", (msg) => {
     msg = moment().format("HH:mm") + " " + msg;
-    console.log("Message received: " + msg);
+    //console.log("Message received: " + msg);
     messages.push(msg);
     // Broadcast the message to all clients
     io.emit("chat message", msg);
