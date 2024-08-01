@@ -7,6 +7,7 @@ const session = require('express-session');
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+const multer = require('multer');
 
 var app = express();
 
@@ -30,6 +31,10 @@ app.use(session({
   saveUninitialized: true,   // 초기화되지 않은 세션을 저장할지 여부
   cookie: { secure: false }  // HTTPS가 아닌 경우 false로 설정
 }));
+
+app.io = function() {
+  return app.get('io');
+};
 
 app.use("/", indexRouter);
 
@@ -58,6 +63,31 @@ app.get("/chat", (req, res) => {
 });
 
 app.use("/users", usersRouter);
+
+// 파일 업로드 설정
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname))
+  }
+});
+const upload = multer({ storage: storage });
+
+app.use('/uploads', express.static('uploads'));
+
+app.post('/upload', upload.single('file'), (req, res) => {
+  console.log('upload');
+  console.log(req.file);
+  if (req.file) {
+    const io = req.app.get('io');
+    io.emit('newImage', { imageUrl: `/uploads/${req.file.filename}` });
+    res.status(200).send('File uploaded successfully');
+  } else {
+    res.status(400).send('File upload failed');
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

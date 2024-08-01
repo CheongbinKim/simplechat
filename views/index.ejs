@@ -180,13 +180,17 @@
             aria-describedby="basic-addon2"
           />
           <div class="input-group-append">
-            <button type="submit" class="btn btn-primary" type="button">
+            <button type="submit" class="btn btn-primary">
               전송
             </button>
           </div>
+          <div class="input-group-append">
+            <label class="btn btn-outline-secondary">
+              <input type="file" id="file-input" style="display: none;" />
+              📎
+            </label>
+          </div>
         </div>
-
-        <!-- <input type="text" class="form-control" id="input" autocomplete="off" /><button type="button" class="btn btn-primary">전송</button> -->
       </form>
     </div>
     <script src="/socket.io/socket.io.js"></script>
@@ -260,6 +264,43 @@
         messages.scrollTop = messages.scrollHeight; // 마지막 메시지로 스크롤
         document.getElementById("input").focus();
       });
+
+      // 이미지가 업로드 될 때마다 새로운 메시지로 추가
+      socket.on('newImage', (data) => {
+        const li = document.createElement("li");
+
+        const img = document.createElement('img');
+        img.src = data.imageUrl;
+        img.style.maxWidth = '100%';  // 이미지 크기 조정
+        img.style.height = 'auto';    // 비율 유지
+        li.appendChild(img);
+        
+        messages.appendChild(li);
+        document.getElementById("input").focus();
+      });
+
+     // 이미지 업로드 및 채팅 메시지 처리
+    document.getElementById('file-input').addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        fetch('/upload', {
+          method: 'POST',
+          body: formData
+        }).then(response => {
+          if (response.ok) {
+            console.log('File uploaded successfully');
+          } else {
+            console.error('File upload failed');
+          }
+        }).catch(error => {
+          console.error('Error:', error);
+        });
+      }
+    });
+      
     </script>
   </body>
 </html>
