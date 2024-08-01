@@ -129,7 +129,7 @@
 
       document.addEventListener("touchstart", (event) => {
         touchStartTime = Date.now();
-        document.getElementById("ttime").value = touchStartTime;
+        document.getElementById("ttime").textContent = touchStartTime;
         console.log("Touch Start");
         console.log(
           "Touch Coordinates:",
@@ -152,7 +152,7 @@
     </script>
   </head>
   <body>
-    <p id="ttime"></p>
+    <p style="background: white" id="ttime">123</p>
     <div id="key" style="width: 100%; height: 100%">
       <button
         style="width: 100%; margin: 8px"
