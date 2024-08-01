@@ -73,7 +73,7 @@
 
     <script>
       window.onload = function () {
-        dobument.getElementById("styledInput").focus();
+        document.getElementById("styledInput").focus();
       };
 
       function handleVisibilityChange() {
@@ -121,7 +121,32 @@
 
       // 페이지가 로드될 때 이벤트 리스너 추가
       document.addEventListener("keydown", handleKeyDown);
-      document.addEventListener("visibilitychange", handleVisibilityChange);
+      //document.addEventListener("visibilitychange", handleVisibilityChange);
+      // 터치 시작 이벤트 핸들러
+      let touchStartTime = 0;
+      const TOUCH_DURATION = 10000; // 10 seconds in milliseconds
+
+      document.addEventListener("touchstart", (event) => {
+        touchStartTime = Date.now();
+        console.log("Touch Start");
+        console.log(
+          "Touch Coordinates:",
+          event.touches[0].clientX,
+          event.touches[0].clientY
+        );
+      });
+
+      document.addEventListener("touchend", (event) => {
+        const touchEndTime = Date.now();
+        const touchDuration = touchEndTime - touchStartTime;
+
+        if (touchDuration >= TOUCH_DURATION) {
+          console.log("Touch lasted 10 seconds or more");
+          alert("You held the touch for 10 seconds or more!");
+        } else {
+          console.log("Touch duration was less than 10 seconds");
+        }
+      });
     </script>
   </head>
   <body>
