@@ -123,31 +123,37 @@
       // 페이지가 로드될 때 이벤트 리스너 추가
       document.addEventListener("keydown", handleKeyDown);
       document.addEventListener("visibilitychange", handleVisibilityChange);
-      // 터치 시작 이벤트 핸들러
-      let touchStartTime = 0;
-      const TOUCH_DURATION = 10000; // 10 seconds in milliseconds
+
+      let touchCount = 0;
+      const maxTouches = 10;
+      const touchInterval = 2000; // 2 seconds window to count touches
+      let lastTouchTime = 0;
+      let timeoutId;
 
       document.addEventListener("touchstart", (event) => {
-        touchStartTime = Date.now();
-        document.getElementById("ttime").textContent = touchStartTime;
-        console.log("Touch Start");
-        console.log(
-          "Touch Coordinates:",
-          event.touches[0].clientX,
-          event.touches[0].clientY
-        );
-      });
+        const currentTime = Date.now();
 
-      document.addEventListener("touchend", (event) => {
-        const touchEndTime = Date.now();
-        const touchDuration = touchEndTime - touchStartTime;
-
-        if (touchDuration >= TOUCH_DURATION) {
-          console.log("Touch lasted 10 seconds or more");
-          alert("You held the touch for 10 seconds or more!");
-        } else {
-          console.log("Touch duration was less than 10 seconds");
+        if (currentTime - lastTouchTime > touchInterval) {
+          // Reset touch count if the interval exceeds the defined window
+          touchCount = 0;
         }
+
+        lastTouchTime = currentTime;
+        touchCount++;
+
+        if (touchCount >= maxTouches) {
+          console.log("10 touches detected!");
+          alert("10 touches detected!");
+          touchCount = 0; // Optionally reset the count after detection
+        }
+
+        // Optionally, you can clear any existing timeout to keep counting within the interval
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(() => {
+          touchCount = 0; // Reset count if interval expires
+        }, touchInterval);
       });
     </script>
   </head>
