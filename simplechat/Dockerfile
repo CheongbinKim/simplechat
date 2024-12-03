@@ -8,7 +8,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Clone the repository (replace with your repository URL)
 #RUN git clone https://github.com/CheongbinKim/simplechat.git .
-COPY simplechat/* .
+COPY simplechat .
 
 # Install dependencies
 RUN npm install
